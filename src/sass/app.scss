@@ -1,0 +1,105 @@
+@import '_mixins';
+@import '_variables';
+@import '_responsive';
+
+body {
+    margin: 0 auto;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: $black;
+}
+.container {
+    max-width: 1268px;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+.close {
+    opacity: 0;
+    visibility: hidden;
+}
+.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.header {
+    .container {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 38px;
+        font-weight: 500;
+    }
+    
+    &__logo {
+        display: flex;
+        svg {
+            width: 24px;
+            height: 58px;
+            margin-right: 14px;
+        }
+        p{
+            font-family: 'PT Serif';
+            font-weight: 700;
+            font-size: 22px;
+            line-height: 25px;
+            text-transform: uppercase;
+            
+        }
+    }
+    &__block {
+        nav {
+            margin: 8px 80px 0 0;
+            .close-icon {
+                display: none;
+            }
+            a {
+                display: inline-block;
+                margin-left: 16px;
+                text-decoration: none;
+                color: $black;
+                &:hover {
+                    transform: scale(1.2);
+                }
+            }
+        }
+        &_contacts {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+            svg {
+                width: 22px;
+                height: 22px;
+            }
+            & > svg {
+                width: 14px;
+                height: 14px;
+                margin: 4px 4px 0 0;
+            }
+            .phones {
+                display: flex;
+                flex-direction: column;
+                a {
+                    color: $black;
+                    border-bottom: 1px solid $red;
+                    text-decoration: none;
+                }
+            }
+            .social {
+                display: flex;
+                justify-content: flex-end;
+                a {
+                    border-bottom: unset;
+                    margin: 4px 0 0 6px;
+                    
+                }
+            }
+            
+        }
+        
+    }
+    
+}
+
