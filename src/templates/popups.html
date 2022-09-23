@@ -1,8 +1,44 @@
-<div class="popup-form">
-    <h2>Заказать консультацию</h2>
-    <p>Перезвоним, проконсультируем по всем вопросам</p>
-    <form>
-        <input type="text" placeholder="Ваше имя">
-        <input type="text" placeholder="">
-    </form>
+<div id="popup" class="popup popup-form">
+    <div class="popup__body">
+        <div class="popup__body_content">
+            <svg class="close-popup" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <use xlink:href="./img/sprite.svg#close-red"></use>
+            </svg>
+            <h2>Заказать консультацию</h2>
+            <p>Перезвоним, проконсультируем по всем вопросам</p>
+            <form>
+                <input class="input-name" type="text" placeholder="Ваше имя">
+                <p class="error name-error"></p>
+                <input class="input-tel" type="tel" placeholder="+380 (99) 999-99-99">
+                <p class="error tel-error"></p>
+                <button class="btn wait-btn close-popup" type="submit">Жду звонка</button>
+            </form>
+            <p>Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
+        </div>
+    </div>
+</div>
+
+<div id="popup_2" class="popup popup_2">
+    <div class="popup__body">
+        <div class="popup__body_content">
+            <svg class="close-popup" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <use xlink:href="./img/sprite.svg#close-red"></use>
+            </svg>
+            <h3>Заявку получили!</h3>
+            <h4>Ожидайте звонка менеджера в течение 15 минут</h4>
+            <p>в рабочее время с 10:00 до 19:00</p>
+        </div>
+    </div>
+</div>
+
+<div id="popup_3" class="popup popup_3">
+    <div class="popup__body">
+        <div class="popup__body_content">
+            <svg class="close-popup" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <use xlink:href="./img/sprite.svg#close-red"></use>
+            </svg>
+            <h3>В данный момент невозможно отправить запрос!</h3>
+            <h4>Повторите пожалуйста позже</h4>
+        </div>
+    </div>
 </div>

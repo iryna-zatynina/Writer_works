@@ -36,25 +36,6 @@
         "prettier": "^1.19.1",
         "sass": "^1.49.0"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "lint-staged": {
-        "*.js": [
-            "prettier --write",
-            "git add"
-        ],
-        "*.css": [
-            "prettier --write",
-            "git add"
-        ],
-        "*.scss": [
-            "prettier --write",
-            "git add"
-        ]
-    },
     "dependencies": {
         "gulp-clean-css": "^4.3.0",
         "gulp-htmlmin": "^5.0.1",
