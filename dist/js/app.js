@@ -1,33 +1,34 @@
-// Burger menu
-var iconBurger = document.querySelector('.burger-icon');
-var headerBlock = document.querySelector('.header__block');
-var iconClose = document.querySelector('.close-icon');
+"use strict"; // Burger menu
+
+const iconBurger = document.querySelector(".burger-icon");
+const headerBlock = document.querySelector(".header__block");
+const iconClose = document.querySelector(".close-icon");
 
 if (iconBurger) {
-  iconBurger.addEventListener('click', function (e) {
-    headerBlock.classList.add('burger-active');
+  iconBurger.addEventListener("click", e => {
+    headerBlock.classList.add("burger-active");
   });
 }
 
 if (iconClose) {
-  iconClose.addEventListener('click', function (e) {
-    headerBlock.classList.remove('burger-active');
+  iconClose.addEventListener("click", e => {
+    headerBlock.classList.remove("burger-active");
   });
 } // Popup
 
 
-var popupLinks = document.querySelectorAll('.popup-link');
-var body = document.querySelector('body');
-var lockPadding = document.querySelectorAll('.lock-padding');
-var unlock = true;
-var timeout = 800;
+const popupLinks = document.querySelectorAll(".popup-link");
+const body = document.querySelector("body");
+const lockPadding = document.querySelectorAll(".lock-padding");
+let unlock = true;
+const timeout = 800;
 
 if (popupLinks.length > 0) {
-  var _loop = function _loop(i) {
-    var popupLink = popupLinks[i];
-    popupLink.addEventListener('click', function (e) {
-      var popupName = popupLink.getAttribute('href').replace('#', '');
-      var curentPopup = document.getElementById(popupName);
+  for (let i = 0; i < popupLinks.length; i++) {
+    const popupLink = popupLinks[i];
+    popupLink.addEventListener("click", e => {
+      const popupName = popupLink.getAttribute('href').replace('#', '');
+      const curentPopup = document.getElementById(popupName);
       popupOpen(curentPopup);
 
       if (curentPopup.classList.contains('popup-form')) {
@@ -36,45 +37,38 @@ if (popupLinks.length > 0) {
 
       e.preventDefault();
     });
-  };
-
-  for (var i = 0; i < popupLinks.length; i++) {
-    _loop(i);
   }
 }
 
-var popupCloseIcon = document.querySelectorAll('.close-popup');
-var waitBtn = document.querySelector('.wait-btn');
+const popupCloseIcon = document.querySelectorAll(".close-popup");
+const waitBtn = document.querySelector(".wait-btn");
 
 if (popupCloseIcon.length > 0) {
-  var _loop2 = function _loop2(_i) {
-    var element = popupCloseIcon[_i];
-    element.addEventListener('click', function (e) {
+  for (let i = 0; i < popupCloseIcon.length; i++) {
+    const element = popupCloseIcon[i];
+    element.addEventListener("click", e => {
       isRequestBtn(element, waitBtn);
       e.preventDefault();
     });
-  };
-
-  for (var _i = 0; _i < popupCloseIcon.length; _i++) {
-    _loop2(_i);
   }
 }
 
 function isRequestBtn(element, button) {
   if (element != button) {
-    popupClose(element.closest('.popup'));
+    popupClose(element.closest(".popup"));
   } else {
-    var validated = validation();
+    const validated = validation();
 
     if (validated) {
-      popupClose(element.closest('.popup'));
+      formSend();
+      popupClose(element.closest(".popup"));
     }
   }
 }
 
 function popupOpen(curentPopup) {
   if (curentPopup && unlock) {
-    var popupActive = document.querySelector('.popup.open');
+    const popupActive = document.querySelector(".popup.open");
 
     if (popupActive) {
       popupClose(popupActive, false);
@@ -83,9 +77,7 @@ function popupOpen(curentPopup) {
     }
 
     curentPopup.classList.add('open');
-    curentPopup.addEventListener('click', function (e) {
-      console.log(curentPopup);
-
+    curentPopup.addEventListener("click", e => {
       if (!e.target.closest('.popup__body_content')) {
         popupClose(e.target.closest('.popup'));
       }
@@ -93,9 +85,7 @@ function popupOpen(curentPopup) {
   }
 }
 
-function popupClose(popupActive) {
-  var doUnlock = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
+function popupClose(popupActive, doUnlock = true) {
   if (unlock) {
     popupActive.classList.remove('open');
 
@@ -106,11 +96,11 @@ function popupClose(popupActive) {
 }
 
 function bodyLock() {
-  var lockPaddingValue = window.innerWidth - document.querySelector('body').offsetWidth + 'px';
+  const lockPaddingValue = window.innerWidth - document.querySelector('body').offsetWidth + 'px';
 
   if (lockPadding.length > 0) {
-    for (var _i2 = 0; _i2 < lockPadding.length; _i2++) {
-      var element = lockPadding[_i2];
+    for (let i = 0; i < lockPadding.length; i++) {
+      const element = lockPadding[i];
       element.style.paddingRight = lockPaddingValue;
     }
   }
@@ -118,16 +108,16 @@ function bodyLock() {
   body.style.paddingRight = lockPaddingValue;
   body.classList.add('lock');
   unlock = false;
-  setTimeout(function () {
+  setTimeout(() => {
     unlock = true;
   }, timeout);
 }
 
 function bodyUnLock() {
-  setTimeout(function () {
+  setTimeout(() => {
     if (lockPadding.length > 0) {
-      for (var _i3 = 0; _i3 < lockPadding.length; _i3++) {
-        var element = lockPadding[_i3];
+      for (let i = 0; i < lockPadding.length; i++) {
+        const element = lockPadding[i];
         element.style.paddingRight = '0px';
       }
     }
@@ -136,61 +126,110 @@ function bodyUnLock() {
     body.classList.remove('lock');
   }, timeout);
   unlock = false;
-  setTimeout(function () {
+  setTimeout(() => {
     unlock = true;
   }, timeout);
 }
 
-document.addEventListener('keydown', function (e) {
+document.addEventListener('keydown', e => {
   if (e.which === 27) {
-    var popupActive = document.querySelector('.popup.open');
+    const popupActive = document.querySelector('.popup.open');
     popupClose(popupActive);
   }
 }); // Validation
 
-var inputName = document.querySelector('.input-name');
-var nameError = document.querySelector('.name-error');
-var inputTel = document.querySelector('.input-tel');
-var telError = document.querySelector('.tel-error');
+const inputName = document.querySelector(".input-name");
+const nameError = document.querySelector(".name-error");
+const inputTel = document.querySelector(".input-tel");
+const telError = document.querySelector(".tel-error");
 
 function validation() {
-  var isValid = true;
+  let isValid = true;
 
   if (inputName.value.length < 3) {
-    nameError.innerHTML = 'Слишком короткое имя';
+    nameError.innerHTML = "Слишком короткое имя";
     isValid = false;
+    console.log("name");
   }
 
-  var countryCode = inputTel.value.slice(0, 4);
+  let countryCode = inputTel.value.slice(0, 4);
 
-  if (countryCode !== '+380') {
-    telError.innerHTML = 'Начни с +380';
+  if (countryCode !== "+380") {
+    telError.innerHTML = "Начни с +380";
     isValid = false;
+    console.log("tel");
   }
 
-  inputName.oninput = function () {
-    nameError.innerHTML = '';
+  inputName.oninput = () => {
+    nameError.innerHTML = "";
   };
 
-  inputTel.oninput = function () {
-    telError.innerHTML = '';
+  inputTel.oninput = () => {
+    telError.innerHTML = "";
   };
 
   return isValid;
 }
 
 function clearInputs() {
-  var inputs = document.querySelectorAll('input');
+  const inputs = document.querySelectorAll('input');
 
-  for (var _i4 = 0; _i4 < inputs.length; _i4++) {
-    var input = inputs[_i4];
+  for (let i = 0; i < inputs.length; i++) {
+    let input = inputs[i];
     input.value = '';
   }
 
-  var errors = document.querySelectorAll('.error');
+  const errors = document.querySelectorAll('.error');
 
-  for (var _i5 = 0; _i5 < errors.length; _i5++) {
-    var error = errors[_i5];
+  for (let i = 0; i < errors.length; i++) {
+    let error = errors[i];
     error.innerHTML = '';
   }
-}
+} // fetch 
+// const fetchRequest = async () => {
+//     const request = fetch("https://mails-nasadyk.herokuapp.com/mails/send", {
+//         method: "POST",
+//         body: JSON.stringify({
+//             name: inputName.value,
+// 		    tel: inputTel.value,
+// 		    email: 'ira.zat1997@gmail.com',
+//         }),
+//         headers: {
+//             "Content-type": "application/json; charset=UTF-8",
+//             "Access-Control-Allow-Origin": "*",
+//         }
+//     });
+// const response = await request.json();
+// console.log(response);
+// }
+// fetchRequest();
+
+
+const form = document.getElementById('form'); // form.addEventListener('submit', formSend);
+
+let formSend = async function () {
+  document.querySelector('.popup__body_content').classList.add('sending');
+  const response = fetch("https://mails-nasadyk.herokuapp.com/mails/send", {
+    method: "POST",
+    body: JSON.stringify({
+      name: inputName.value,
+      tel: inputTel.value,
+      email: 'arinaroman348@gmail.com'
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+      "Access-Control-Allow-Origin": "*"
+    }
+  });
+  let result = await response;
+
+  if (result.ok) {
+    document.querySelector('.popup__body_content').classList.remove('sending');
+    let popup2 = document.querySelector('.popup_2');
+    popup2.classList.add('open');
+  } else {
+    document.querySelector('.popup__body_content').classList.remove('sending');
+    let popup3 = document.querySelector('.popup_3');
+    popup3.classList.add('open');
+  }
+};
