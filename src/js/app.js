@@ -13,7 +13,20 @@ if (iconClose) {
     iconClose.addEventListener("click", (e) => {
         headerBlock.classList.remove("burger-active")
     })
+    const menuLinks = document.querySelectorAll('.menu-link');
+    console.log(menuLinks);
+    if (menuLinks.length > 0) {
+        menuLinks.forEach(menuLink => {
+            menuLink.addEventListener("click", () => {
+                if (headerBlock.classList.contains("burger-active")) {
+                    headerBlock.classList.remove("burger-active");
+                }
+            })
+        })
+    }
 }
+
+
 
 
 
@@ -22,7 +35,7 @@ if (iconClose) {
 
 const popupLinks = document.querySelectorAll(".popup-link");
 const body = document.querySelector("body");
-const lockPadding = document.querySelectorAll(".lock-padding");
+
 
 let unlock = true;
 
@@ -31,43 +44,59 @@ const timeout = 800;
 if (popupLinks.length > 0) {
     for (let i = 0; i < popupLinks.length; i++) {
         const popupLink = popupLinks[i];
+        console.log(popupLink);
         popupLink.addEventListener("click", (e) => {
-            const popupName = popupLink.getAttribute('href').replace('#', '');
-            const curentPopup = document.getElementById(popupName);
+            const curentPopup = document.getElementById("popup");
             popupOpen(curentPopup);
-            if (curentPopup.classList.contains('popup-form')) {
-                clearInputs();
-            }
+            
             e.preventDefault();
         });
     }
 }
 const popupCloseIcon = document.querySelectorAll(".close-popup");
-const waitBtn = document.querySelector(".wait-btn");
+const forms = document.querySelectorAll("form");
 
+if (forms.length > 0) {
+    for (let i = 0; i < forms.length; i++) {
+        const form = forms[i];
+        const waitBtn = form.querySelector(".wait-btn");
+        
+        waitBtn.addEventListener("click", (e) => {
+            
+            const validated = validation(form);
+            if (validated) {
+                formSend(form);
+                clearInputs(form);
+                if (waitBtn.classList.contains("form-wait-btn")) {
+                    popupClose(waitBtn.closest(".popup"));
+                    clearInputs(form);
+                }
+            } 
+            e.preventDefault();
+        });
+        document.addEventListener("click", (e) => {
+            if (e.target !== waitBtn) {
+                clearInputs(form);
+            }
+        })
+    }
+}
 if (popupCloseIcon.length > 0) {
     for (let i = 0; i < popupCloseIcon.length; i++) {
         const element = popupCloseIcon[i];
-        element.addEventListener("click", (e) => {
-            
-            isRequestBtn(element, waitBtn);
-            e.preventDefault();
-        });
+        if (!element.classList.contains("form-wait-btn")) {
+            element.addEventListener("click", (e) => {
+                popupClose(element.closest(".popup"));
+                e.preventDefault();
+            })
+        };
     }
 }
-function isRequestBtn(element, button) {
-    if (element != button) {
-        popupClose(element.closest(".popup"));
-    } else {
-        const validated = validation();
-        if (validated) {
-            formSend();
-            popupClose(element.closest(".popup"));
-        } 
-    }
-}
+
+
 function popupOpen(curentPopup) {
     if (curentPopup && unlock) {
+    
         const popupActive = document.querySelector(".popup.open");
         if (popupActive) {
             popupClose(popupActive, false);
@@ -94,13 +123,7 @@ function popupClose(popupActive, doUnlock = true) {
 
 
 function bodyLock() {
-    const lockPaddingValue = window.innerWidth - document.querySelector('body').offsetWidth + 'px';
-    if (lockPadding.length > 0) {
-        for (let i = 0; i < lockPadding.length; i++) {
-            const element = lockPadding[i];
-            element.style.paddingRight = lockPaddingValue;
-        }
-    }
+    const lockPaddingValue = window.innerWidth - document.querySelector('.wraper').offsetWidth + 'px';
     body.style.paddingRight = lockPaddingValue;
     body.classList.add('lock');
 
@@ -111,12 +134,6 @@ function bodyLock() {
 }
 function bodyUnLock() {
     setTimeout(() => {
-        if (lockPadding.length > 0) {
-            for (let i = 0; i < lockPadding.length; i++) {
-                const element = lockPadding[i];
-                element.style.paddingRight = '0px';
-            }
-        }
         body.style.paddingRight = '0px';
         body.classList.remove('lock');
     }, timeout);
@@ -134,22 +151,21 @@ document.addEventListener('keydown', (e) => {
 })
 
 // Validation
-const inputName = document.querySelector(".input-name")
-const nameError = document.querySelector(".name-error")
-const inputTel = document.querySelector(".input-tel")
-const telError = document.querySelector(".tel-error")
-function validation() {
+
+function validation(form) {
+    const inputName = form.querySelector(".input-name")
+    const nameError = form.querySelector(".name-error")
+    const inputTel = form.querySelector(".input-tel")
+    const telError = form.querySelector(".tel-error")
     let isValid = true;
     if (inputName.value.length < 3) {
         nameError.innerHTML = "Слишком короткое имя";
         isValid = false;
-        console.log("name");
     } 
     let countryCode = inputTel.value.slice(0, 4);
     if (countryCode !== "+380") {
         telError.innerHTML = "Начни с +380";
         isValid = false;
-        console.log("tel");
     } 
 
     inputName.oninput = () => {
@@ -160,13 +176,13 @@ function validation() {
     } 
     return isValid;
 }
-function clearInputs() {
-    const inputs = document.querySelectorAll('input');
+function clearInputs(form) {
+    const inputs = form.querySelectorAll('input');
     for (let i = 0; i < inputs.length; i++) {
         let input = inputs[i];
         input.value = '';
     }
-    const errors = document.querySelectorAll('.error');
+    const errors = form.querySelectorAll('.error');
     for (let i = 0; i < errors.length; i++) {
         let error = errors[i];
         error.innerHTML = '';
@@ -174,53 +190,56 @@ function clearInputs() {
 }
 
 // fetch 
-// const fetchRequest = async () => {
-//     const request = fetch("https://mails-nasadyk.herokuapp.com/mails/send", {
-//         method: "POST",
-//         body: JSON.stringify({
-//             name: inputName.value,
-// 		    tel: inputTel.value,
-// 		    email: 'ira.zat1997@gmail.com',
-//         }),
-//         headers: {
-//             "Content-type": "application/json; charset=UTF-8",
-//             "Access-Control-Allow-Origin": "*",
-//         }
-//     });
-    // const response = await request.json();
-    // console.log(response);
-// }
-// fetchRequest();
 
-
-
-    const form = document.getElementById('form');
-    
-    // form.addEventListener('submit', formSend);
-    
-    let formSend = async function() {
-        document.querySelector('.popup__body_content').classList.add('sending');
-        const response = fetch("https://mails-nasadyk.herokuapp.com/mails/send", {
+let formSend = async function(form) {
+    body.classList.add('sending');
+    const inputName = form.querySelector(".input-name")
+    const inputTel = form.querySelector(".input-tel")
+    const inputDetail = form.querySelector(".input-details")
+    let response;
+    if (inputDetail) {
+        response = fetch("https://mails-nasadyk.herokuapp.com/mails/send", {
             method: "POST",
             body: JSON.stringify({
                 name: inputName.value,
                 tel: inputTel.value,
                 email: 'arinaroman348@gmail.com',
+                detail: inputDetail.value,
+                
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "Access-Control-Allow-Origin": "*",
             }
         });
-        let result = await response;
-        if (result.ok) {
-            document.querySelector('.popup__body_content').classList.remove('sending');
-            let popup2 = document.querySelector('.popup_2');
-            popup2.classList.add('open');
-        } else {
-            document.querySelector('.popup__body_content').classList.remove('sending');
-            let popup3 = document.querySelector('.popup_3');
-            popup3.classList.add('open');
-        }
+    } else {
+        response = fetch("https://mails-nasadyk.herokuapp.com/mails/send", {
+            method: "POST",
+            body: JSON.stringify({
+                name: inputName.value,
+                tel: inputTel.value,
+                email: 'arinaroman348@gmail.com',
+                
+                
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "Access-Control-Allow-Origin": "*",
+            }
+        });
     }
+    let result = await response;
+    if (result.ok) {
+        body.classList.remove('sending');
+        let popup2 = document.querySelector('.popup_2');
+        popup2.classList.add('open');
+        console.log("yes");
+    } else {
+        body.classList.remove('sending');
+        let popup3 = document.querySelector('.popup_3');
+        popup3.classList.add('open');
+        console.log("no");
+    }
+    clearInputs(form);
+}
 
