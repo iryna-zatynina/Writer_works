@@ -159,17 +159,35 @@ function validation(form) {
     const inputTel = form.querySelector(".input-tel")
     const telError = form.querySelector(".tel-error")
     let isValid = true;
-    console.log(inputTel.length);
-    if (inputName.value.length < 3) {
-        nameError.innerHTML = "Слишком короткое имя";
+    
+    
+    let countryCode = inputTel.value.slice(0, 4);
+    let number;
+    if (inputTel.value.includes("+")) {
+        let array = inputTel.value.split("");
+        console.log(array);
+        for (let i = 1; i < array.length; i++) {
+            let el = array[i];
+            if (el === "+") {
+                isValid = false;
+            } else {
+                isValid = true;
+            }
+        }
+        if (isValid) {
+            number = inputTel.value.replace("+", "")
+        }
+        
+    }
+    if (inputTel.value.length == 0) {
+        telError.innerHTML = "Введите номер телефона";
+        isValid = false;
+    } else if (countryCode !== "+380" || inputTel.value.length < 13 || inputTel.value.length > 13 || isNaN(number)) {
+        telError.innerHTML = "Не корректный номер телефона";
         isValid = false;
     } 
-    let countryCode = inputTel.value.slice(0, 4);
-    if (countryCode !== "+380" ) {
-        telError.innerHTML = "Начни с +380";
-        isValid = false;
-    } else if (inputTel.value.length < 13) {
-        telError.innerHTML = "Слишком короткий номер телефона";
+    if (inputName.value.length < 3) {
+        nameError.innerHTML = "Слишком короткое имя";
         isValid = false;
     }
 
