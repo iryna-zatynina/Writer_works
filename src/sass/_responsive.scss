@@ -182,11 +182,20 @@
                 width: 50%;
                 margin-top: 0 !important;
                 padding: 10px;
-                svg {
-                    fill: white;
-                }
                 a {
                     color: $white !important;
+                }
+                .telegram-white {
+                    display: block !important;
+                }
+                .viber-white {
+                    display: block !important;
+                }
+                .telegram {
+                    display: none;
+                }
+                .viber {
+                    display: none;
                 }
             }
         }

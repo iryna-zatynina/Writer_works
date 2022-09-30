@@ -158,6 +158,9 @@ h5 {
             display: flex;
             justify-content: flex-end;
             margin-top: 8px;
+            .call {
+                fill: $white;
+            }
             svg {
                 width: 22px;
                 height: 22px;
@@ -175,6 +178,9 @@ h5 {
                     border-bottom: 1px solid $red;
                     text-decoration: none;
                 }
+                span {
+                    margin-left: 2px;
+                }
             }
             .social {
                 display: flex;
@@ -182,6 +188,12 @@ h5 {
                 a {
                     border-bottom: unset;
                     margin: 4px 0 0 6px;
+                }
+                .telegram-white {
+                    display: none;
+                }
+                .viber-white {
+                    display: none;
                 }
             }
         }
@@ -278,8 +290,6 @@ h5 {
     .services {
 		&__block1 {
             display: flex;
-            align-items: top;
-            
             margin: 66px 0 60px 0;
             svg {
                 width: 54.5px;
@@ -302,6 +312,9 @@ h5 {
                     display: flex;
                     justify-content: space-between;
                     min-height: 218px;
+                    &:hover {
+                        cursor: pointer;
+                    }
                     &__block {
                         display: flex;
                         flex-direction: column;
@@ -539,12 +552,22 @@ h5 {
                 width: 100%;
                 height: 60px;
                 padding: 0 16px;
+                
                 &::placeholder {
                     font-weight: 500;
                     font-size: 12px;
                     line-height: 14px;
                     opacity: 0.6;
+                }
+            }
+            .input-details {
+                position: relative;
+                &::placeholder {
                     white-space: pre-wrap;
+                    position: absolute;
+                    top: 16px;
+                    left: 16px;
+                    max-width: 239px;
                 }
             }
             div {
@@ -711,7 +734,7 @@ h5 {
     padding: 12px 0 20px 0;
     &__wraper {
         display: flex;
-        justify-content: auto;
+        
 
     }
     &__block1 {
@@ -786,7 +809,7 @@ h5 {
     left: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    transition: all 0.8s ease 0s;
+    transition: all 0.4s ease 0s;
     &__body {
         min-height: 100%;
         display: flex;

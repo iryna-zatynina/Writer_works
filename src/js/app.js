@@ -5,21 +5,23 @@ const iconBurger = document.querySelector(".burger-icon");
 const headerBlock = document.querySelector(".header__block");
 const iconClose = document.querySelector(".close-icon");
 if (iconBurger) {
-    iconBurger.addEventListener("click", (e) => {
+    iconBurger.addEventListener("click", () => {
         headerBlock.classList.add("burger-active")
+        bodyLock();
     })
 }
 if (iconClose) {
-    iconClose.addEventListener("click", (e) => {
+    iconClose.addEventListener("click", () => {
         headerBlock.classList.remove("burger-active")
+        bodyUnLock();
     })
     const menuLinks = document.querySelectorAll('.menu-link');
-    console.log(menuLinks);
     if (menuLinks.length > 0) {
         menuLinks.forEach(menuLink => {
             menuLink.addEventListener("click", () => {
                 if (headerBlock.classList.contains("burger-active")) {
                     headerBlock.classList.remove("burger-active");
+                    bodyUnLock();
                 }
             })
         })
@@ -39,16 +41,14 @@ const body = document.querySelector("body");
 
 let unlock = true;
 
-const timeout = 800;
+const timeout = 400;
 
 if (popupLinks.length > 0) {
     for (let i = 0; i < popupLinks.length; i++) {
         const popupLink = popupLinks[i];
-        console.log(popupLink);
         popupLink.addEventListener("click", (e) => {
             const curentPopup = document.getElementById("popup");
             popupOpen(curentPopup);
-            
             e.preventDefault();
         });
     }
@@ -74,8 +74,9 @@ if (forms.length > 0) {
             } 
             e.preventDefault();
         });
+        
         document.addEventListener("click", (e) => {
-            if (e.target !== waitBtn) {
+            if (!e.target.closest("form")) {
                 clearInputs(form);
             }
         })
@@ -158,15 +159,19 @@ function validation(form) {
     const inputTel = form.querySelector(".input-tel")
     const telError = form.querySelector(".tel-error")
     let isValid = true;
+    console.log(inputTel.length);
     if (inputName.value.length < 3) {
         nameError.innerHTML = "Слишком короткое имя";
         isValid = false;
     } 
     let countryCode = inputTel.value.slice(0, 4);
-    if (countryCode !== "+380") {
+    if (countryCode !== "+380" ) {
         telError.innerHTML = "Начни с +380";
         isValid = false;
-    } 
+    } else if (inputTel.value.length < 13) {
+        telError.innerHTML = "Слишком короткий номер телефона";
+        isValid = false;
+    }
 
     inputName.oninput = () => {
     nameError.innerHTML = "";
@@ -233,12 +238,12 @@ let formSend = async function(form) {
         body.classList.remove('sending');
         let popup2 = document.querySelector('.popup_2');
         popup2.classList.add('open');
-        console.log("yes");
+        
     } else {
         body.classList.remove('sending');
         let popup3 = document.querySelector('.popup_3');
         popup3.classList.add('open');
-        console.log("no");
+        
     }
     clearInputs(form);
 }
