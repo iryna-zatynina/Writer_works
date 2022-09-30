@@ -182,7 +182,7 @@ function validation(form) {
     if (inputTel.value.length == 0) {
         telError.innerHTML = "Введите номер телефона";
         isValid = false;
-    } else if (countryCode !== "+380" || inputTel.value.length < 13 || inputTel.value.length > 13 || isNaN(number)) {
+    } else if (countryCode !== "+380" || inputTel.value.length < 12 || inputTel.value.length > 12 || isNaN(number)) {
         telError.innerHTML = "Не корректный номер телефона";
         isValid = false;
     } 
