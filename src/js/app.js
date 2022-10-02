@@ -29,18 +29,11 @@ if (iconClose) {
 }
 
 
-
-
-
-
 // Popup
 
 const popupLinks = document.querySelectorAll(".popup-link");
 const body = document.querySelector("body");
-
-
 let unlock = true;
-
 const timeout = 400;
 
 if (popupLinks.length > 0) {
@@ -60,9 +53,9 @@ if (forms.length > 0) {
     for (let i = 0; i < forms.length; i++) {
         const form = forms[i];
         const waitBtn = form.querySelector(".wait-btn");
-        
+
         waitBtn.addEventListener("click", (e) => {
-            
+
             const validated = validation(form);
             if (validated) {
                 formSend(form);
@@ -71,10 +64,10 @@ if (forms.length > 0) {
                     popupClose(waitBtn.closest(".popup"));
                     clearInputs(form);
                 }
-            } 
+            }
             e.preventDefault();
         });
-        
+
         document.addEventListener("click", (e) => {
             if (!e.target.closest("form")) {
                 clearInputs(form);
@@ -82,6 +75,7 @@ if (forms.length > 0) {
         })
     }
 }
+
 if (popupCloseIcon.length > 0) {
     for (let i = 0; i < popupCloseIcon.length; i++) {
         const element = popupCloseIcon[i];
@@ -90,29 +84,31 @@ if (popupCloseIcon.length > 0) {
                 popupClose(element.closest(".popup"));
                 e.preventDefault();
             })
-        };
+        }
+        ;
     }
 }
 
 
 function popupOpen(curentPopup) {
     if (curentPopup && unlock) {
-    
+
         const popupActive = document.querySelector(".popup.open");
         if (popupActive) {
             popupClose(popupActive, false);
-        } else  {
+        } else {
             bodyLock();
         }
         curentPopup.classList.add('open');
 
         curentPopup.addEventListener("click", (e) => {
-            if (!e.target.closest('.popup__body_content'))  {
+            if (!e.target.closest('.popup__body_content')) {
                 popupClose(e.target.closest('.popup'));
             }
         });
     }
 }
+
 function popupClose(popupActive, doUnlock = true) {
     if (unlock) {
         popupActive.classList.remove('open');
@@ -133,6 +129,7 @@ function bodyLock() {
         unlock = true;
     }, timeout);
 }
+
 function bodyUnLock() {
     setTimeout(() => {
         body.style.paddingRight = '0px';
@@ -144,6 +141,7 @@ function bodyUnLock() {
         unlock = true;
     }, timeout);
 }
+
 document.addEventListener('keydown', (e) => {
     if (e.which === 27) {
         const popupActive = document.querySelector('.popup.open');
@@ -159,13 +157,13 @@ function validation(form) {
     const inputTel = form.querySelector(".input-tel")
     const telError = form.querySelector(".tel-error")
     let isValid = true;
-    
-    
+
+
     let countryCode = inputTel.value.slice(0, 4);
     let number;
     if (inputTel.value.includes("+")) {
         let array = inputTel.value.split("");
-        console.log(array);
+
         for (let i = 1; i < array.length; i++) {
             let el = array[i];
             if (el === "+") {
@@ -177,28 +175,29 @@ function validation(form) {
         if (isValid) {
             number = inputTel.value.replace("+", "")
         }
-        
+
     }
-    if (inputTel.value.length == 0) {
+    if (inputTel.value.length === 0) {
         telError.innerHTML = "Введите номер телефона";
         isValid = false;
-    } else if (countryCode !== "+380" || inputTel.value.length < 12 || inputTel.value.length > 12 || isNaN(number)) {
+    } else if (countryCode !== "+380" || inputTel.value.length < 13 || inputTel.value.length > 13 || isNaN(number)) {
         telError.innerHTML = "Не корректный номер телефона";
         isValid = false;
-    } 
+    }
     if (inputName.value.length < 3) {
         nameError.innerHTML = "Слишком короткое имя";
         isValid = false;
     }
 
     inputName.oninput = () => {
-    nameError.innerHTML = "";
+        nameError.innerHTML = "";
     }
     inputTel.oninput = () => {
-    telError.innerHTML = "";
-    } 
+        telError.innerHTML = "";
+    }
     return isValid;
 }
+
 function clearInputs(form) {
     const inputs = form.querySelectorAll('input');
     for (let i = 0; i < inputs.length; i++) {
@@ -212,56 +211,38 @@ function clearInputs(form) {
     }
 }
 
-// fetch 
+// fetch
 
-let formSend = async function(form) {
+let formSend = async function (form) {
     body.classList.add('sending');
     const inputName = form.querySelector(".input-name")
     const inputTel = form.querySelector(".input-tel")
     const inputDetail = form.querySelector(".input-details")
     let response;
-    if (inputDetail) {
-        response = fetch("https://mails-nasadyk.herokuapp.com/mails/send", {
-            method: "POST",
-            body: JSON.stringify({
-                name: inputName.value,
-                tel: inputTel.value,
-                email: 'arinaroman348@gmail.com',
-                detail: inputDetail.value,
-                
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-                "Access-Control-Allow-Origin": "*",
-            }
-        });
-    } else {
-        response = fetch("https://mails-nasadyk.herokuapp.com/mails/send", {
-            method: "POST",
-            body: JSON.stringify({
-                name: inputName.value,
-                tel: inputTel.value,
-                email: 'arinaroman348@gmail.com',
-                
-                
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-                "Access-Control-Allow-Origin": "*",
-            }
-        });
-    }
+
+    response = fetch("https://mails-nasadyk.herokuapp.com/mails/send", {
+        method: "POST", body: JSON.stringify({
+            name: inputName.value,
+            tel: inputTel.value,
+            email: 'arinaroman348@gmail.com',
+            detail: inputDetail ? inputDetail.value : null,
+
+        }), headers: {
+            "Content-type": "application/json; charset=UTF-8", "Access-Control-Allow-Origin": "*",
+        }
+    });
+
     let result = await response;
+
     if (result.ok) {
         body.classList.remove('sending');
         let popup2 = document.querySelector('.popup_2');
         popup2.classList.add('open');
-        
     } else {
         body.classList.remove('sending');
         let popup3 = document.querySelector('.popup_3');
         popup3.classList.add('open');
-        
+
     }
     clearInputs(form);
 }
